@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches: [main, copilot/**]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Run tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install test dependencies
+        run: pip install pytest
+
+      - name: Run tests
+        run: python -m pytest tests/ -v
+
+  build-native:
+    name: Build native module (${{ matrix.arch }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x64
+            toolchain: gcc
+          - arch: armv7emsp
+            toolchain: gcc-arm-none-eabi
+          - arch: xtensawin
+            toolchain: xtensa-esp32-elf
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y make
+          pip install pyelftools
+
+      - name: Install ARM toolchain
+        if: matrix.arch == 'armv7emsp'
+        run: |
+          sudo apt-get install -y gcc-arm-none-eabi libnewlib-arm-none-eabi
+
+      - name: Install Xtensa toolchain
+        if: matrix.arch == 'xtensawin'
+        run: |
+          TOOLCHAIN_URL="https://github.com/espressif/crosstool-NG/releases/download/esp-13.2.0_20240530/xtensa-esp-elf-13.2.0_20240530-x86_64-linux-gnu.tar.xz"
+          curl -fsSL "$TOOLCHAIN_URL" | tar -xJ -C /opt
+          echo "/opt/xtensa-esp-elf/bin" >> "$GITHUB_PATH"
+
+      - name: Clone MicroPython source
+        run: |
+          git clone --depth 1 https://github.com/micropython/micropython.git /tmp/micropython
+
+      - name: Build pouch_crypto.mpy (${{ matrix.arch }})
+        working-directory: native/pouch_crypto
+        run: |
+          make MPY_DIR=/tmp/micropython ARCH=${{ matrix.arch }}
+
+      - name: Upload native module artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pouch_crypto-${{ matrix.arch }}
+          path: native/pouch_crypto/pouch_crypto.mpy

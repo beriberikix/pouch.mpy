@@ -1,0 +1,23 @@
+{
+    "urls": [
+        ["pouch/__init__.py", "github:beriberikix/pouch.mpy/pouch/__init__.py"],
+        ["pouch/block.py", "github:beriberikix/pouch.mpy/pouch/block.py"],
+        ["pouch/cbor.py", "github:beriberikix/pouch.mpy/pouch/cbor.py"],
+        ["pouch/const.py", "github:beriberikix/pouch.mpy/pouch/const.py"],
+        ["pouch/header.py", "github:beriberikix/pouch.mpy/pouch/header.py"],
+        ["pouch/crypto/__init__.py", "github:beriberikix/pouch.mpy/pouch/crypto/__init__.py"],
+        ["pouch/crypto/cert.py", "github:beriberikix/pouch.mpy/pouch/crypto/cert.py"],
+        ["pouch/crypto/session.py", "github:beriberikix/pouch.mpy/pouch/crypto/session.py"],
+        ["pouch/crypto/uplink.py", "github:beriberikix/pouch.mpy/pouch/crypto/uplink.py"],
+        ["pouch/crypto/downlink.py", "github:beriberikix/pouch.mpy/pouch/crypto/downlink.py"],
+        ["pouch/services/__init__.py", "github:beriberikix/pouch.mpy/pouch/services/__init__.py"],
+        ["pouch/services/logging.py", "github:beriberikix/pouch.mpy/pouch/services/logging.py"],
+        ["pouch/services/ota.py", "github:beriberikix/pouch.mpy/pouch/services/ota.py"],
+        ["pouch/services/settings.py", "github:beriberikix/pouch.mpy/pouch/services/settings.py"],
+        ["pouch/services/state.py", "github:beriberikix/pouch.mpy/pouch/services/state.py"],
+        ["pouch/services/stream.py", "github:beriberikix/pouch.mpy/pouch/services/stream.py"],
+        ["pouch/transport/__init__.py", "github:beriberikix/pouch.mpy/pouch/transport/__init__.py"],
+        ["pouch/transport/ble_gatt.py", "github:beriberikix/pouch.mpy/pouch/transport/ble_gatt.py"]
+    ],
+    "version": "0.2.0"
+}
